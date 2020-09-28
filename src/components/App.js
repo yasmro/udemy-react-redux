@@ -55,6 +55,8 @@ const mapDispatchToProps = (dispatch) => ({
   decrement: () => dispatch(decrement()),
 })
 
+// const mapDispatchToProps = ({ increment, decrement })
+
 export default connect(mapStateToProps, mapDispatchToProps)(App)
 
 
