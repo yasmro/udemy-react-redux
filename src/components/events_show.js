@@ -6,13 +6,14 @@ import { Link } from 'react-router-dom'
 
 import { Field, reduxForm } from 'redux-form'
 
-import { postEvent } from '../actions'
+import { getEvent, deleteEvent, putEvent } from '../actions'
 
-class EventsNew extends Component {
+class EventsShow extends Component {
 
   constructor(props){
     super(props)
     this.onSubmit = this.onSubmit.bind(this)
+    this.onDeleteClick = this.onDeleteClick.bind(this)
   }
 
   renderField(field){
@@ -30,6 +31,12 @@ class EventsNew extends Component {
     this.props.history.push('/')
   }
 
+  async onDeleteClick(){
+    const { id } = this.props.match.params
+    await this.props.deleteEvent(id)
+    this.props.history.push('/')
+  }
+
   render(){
     const { handleSubmit, pristine, submitting } = this.props;
     // pristine: 入力していない
@@ -37,7 +44,7 @@ class EventsNew extends Component {
 
     return(
       <div>
-        <h1>Post Event</h1>
+        <h1>Show/Update Event</h1>
         <form onSubmit={handleSubmit(this.onSubmit)}>
         
         <div><Field label="Title" name="title" type="text" component={this.renderField} /></div>
@@ -46,6 +53,7 @@ class EventsNew extends Component {
         <div>
           <input type="submit" value="Submit" disable={pristine || submitting} />
           <Link to="/" >Cancel</Link>
+          <Link to="/" onClick={this.onDeleteClick}>Delete</Link>
         </div>
         </form>
       </div>
@@ -57,7 +65,7 @@ class EventsNew extends Component {
 // key: () => dispatch(返す関数())
 
 
-const mapDispatchToProps = ({ postEvent })
+const mapDispatchToProps = ({ deleteEvent })
 
 const validate = values => {
   const errors = {}
@@ -68,5 +76,5 @@ const validate = values => {
 }
 
 export default connect(null, mapDispatchToProps)(
-  reduxForm({ validate, form: 'eventNewForm'})(EventsNew)
+  reduxForm({ validate, form: 'eventShowForm'})(EventsShow)
 )
