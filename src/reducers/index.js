@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 // count appで処理する状態countをインポート
-import count from './count'
+import events from './events'
 
 // すべてのreducerをcombineReducersで一元化
 // ex）export default combineReducers({ state1, state2, state3 })
-export default combineReducers({ count })
+export default combineReducers({ events })
