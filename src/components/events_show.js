@@ -16,6 +16,11 @@ class EventsShow extends Component {
     this.onDeleteClick = this.onDeleteClick.bind(this)
   }
 
+  componentDidMount(){
+    const { id } = this.props.match.params
+    if(id) this.props.getEvent(id)
+  }
+
   renderField(field){
     const { input, label, type, meta: {touched, error}} = field
     return (
@@ -27,7 +32,7 @@ class EventsShow extends Component {
   }
 
   async onSubmit(values){
-    await this.props.postEvent(values)
+    await this.props.putEvent(values)
     this.props.history.push('/')
   }
 
@@ -38,7 +43,7 @@ class EventsShow extends Component {
   }
 
   render(){
-    const { handleSubmit, pristine, submitting } = this.props;
+    const { handleSubmit, pristine, submitting, invalid } = this.props;
     // pristine: 入力していない
     // submitting: submitが押されたらtrue
 
@@ -51,7 +56,7 @@ class EventsShow extends Component {
         <div><Field label="Body" name="body" type="text" component={this.renderField} /></div>
 
         <div>
-          <input type="submit" value="Submit" disable={pristine || submitting} />
+          <input type="submit" value="Submit" disable={pristine || submitting || invalid} />
           <Link to="/" >Cancel</Link>
           <Link to="/" onClick={this.onDeleteClick}>Delete</Link>
         </div>
@@ -61,11 +66,15 @@ class EventsShow extends Component {
   }
 }
 
-// 5-2. mapDispatchToPropsで使用するactionを明記
-// key: () => dispatch(返す関数())
 
 
-const mapDispatchToProps = ({ deleteEvent })
+const mapStateToProps = (state, ownProps) => {
+  // 初期状態で表示する値をevent(=state)からとってくる
+  const event = state.events[ownProps.match.params.id]
+  return { initialValues: event, state}
+}
+
+const mapDispatchToProps = ({ deleteEvent, getEvent, putEvent })
 
 const validate = values => {
   const errors = {}
@@ -75,6 +84,6 @@ const validate = values => {
   return errors
 }
 
-export default connect(null, mapDispatchToProps)(
-  reduxForm({ validate, form: 'eventShowForm'})(EventsShow)
+export default connect(mapStateToProps, mapDispatchToProps)(
+  reduxForm({ validate, form: 'eventShowForm', enableReinitialize: true})(EventsShow)
 )
