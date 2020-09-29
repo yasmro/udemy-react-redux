@@ -4,8 +4,11 @@ import { connect } from 'react-redux';
 
 import _ from 'lodash';
 
+import { Link } from 'react-router-dom'
+
 // 2. すべてのactions関数を設定
 import { readEvents } from '../actions'
+
 
 
 class EventsIndex extends Component {
@@ -42,7 +45,7 @@ class EventsIndex extends Component {
             {this.renderEvents()}
           </tbody>
         </table>
-
+        <Link to="/events/new">New Event</Link>
       </div>
     )
   }

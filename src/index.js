@@ -6,8 +6,14 @@ import reducer from './reducers'
 // reduxからapplyMiddlewareをインポート
 import thunk from 'redux-thunk'
 
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+
+
+
 import './index.css';
 import EventsIndex from './components/events_index';
+import EventsNew from './components/events_new';
+
 import * as serviceWorker from './serviceWorker';
 
 const store = createStore(reducer, applyMiddleware(thunk))
@@ -15,7 +21,12 @@ const store = createStore(reducer, applyMiddleware(thunk))
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <EventsIndex />
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/events/" component={EventsIndex} /> 
+          <Route exact path="/events/new" component={EventsNew} />
+        </Switch>
+      </BrowserRouter>
     </Provider> 
   </React.StrictMode>,
   document.getElementById('root')
