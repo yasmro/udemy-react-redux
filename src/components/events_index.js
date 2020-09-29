@@ -24,7 +24,7 @@ class EventsIndex extends Component {
       <tr key={event.id}>
         <td>{event.id}</td>
         <td>{event.title}</td>
-        <td>event.body</td>
+        <td>{event.body}</td>
       </tr>
     ))
   }
